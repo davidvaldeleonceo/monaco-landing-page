@@ -16,17 +16,19 @@ const menuItems = [
 
 const adicionales = [
   {
-    title: undefined,
+    title: "cera y restaurador",
     description: "proteje tu moto del polvo y la lluvia",
+    titleSize: "1.05rem",
+    centered: true,
+    cardMargin: "0 0 0 1rem",
   },
   {
     title: "kit de arrastre",
     description:
       "Desengrasa el kit de arrastre de tu moto y mantenlo como nuevo",
-  },
-  {
-    title: "pulida de farola",
-    description: "Devolvele la claridad a tus farolas con nuestro servicio",
+    titleSize: "1.05rem",
+    centered: true,
+    cardMargin: "0 1rem 0 0",
   },
 ];
 
@@ -166,10 +168,12 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4, ease }}
         >
-          <h2 className="text-[1.6rem] md:text-[2rem] font-bold text-[#1d1d1f] tracking-[-1px]">
+          <h2
+            className="text-[1.6rem] md:text-[2rem] font-bold text-[#1d1d1f] tracking-[-1px]"
+            style={{ fontSize: "1.3rem", margin: "1rem" }}
+          >
             adicionales
           </h2>
-          <div className="h-[1px] bg-[#d2d2d7] mt-2 mb-5" />
         </motion.div>
 
         {/* Horizontal scroll cards */}
@@ -183,19 +187,23 @@ export default function Home() {
             <div
               key={i}
               className="flex-shrink-0 w-[75vw] max-w-[340px] bg-[#d1d1d6] rounded-2xl p-5 flex flex-col justify-between"
-              style={{ minHeight: "420px" }}
+              style={{ minHeight: "420px", margin: item.cardMargin || "0", width: "260px" }}
             >
               <div>
                 {item.title && (
-                  <p className="text-[0.85rem] text-[#1d1d1f]/70 mb-1 tracking-[-0.2px]">
-                    {item.title}
-                  </p>
+                  <div>
+                    <p className="text-[0.85rem] text-[#1d1d1f]/70 mb-1 tracking-[-0.2px]" style={item.titleSize ? { fontSize: item.titleSize, padding: "1rem" } : undefined}>
+                      {item.title}
+                    </p>
+                  </div>
                 )}
-                <p className="text-[1.1rem] md:text-[1.2rem] text-[#1d1d1f] font-medium leading-snug tracking-[-0.3px] max-w-[240px]">
-                  {item.description}
-                </p>
+                <div className={item.centered ? "flex justify-center" : ""}>
+                  <p className={`text-[1.1rem] md:text-[1.2rem] text-[#1d1d1f] font-medium leading-snug tracking-[-0.3px] max-w-[240px] ${item.centered ? "text-center" : ""}`} style={item.centered ? { padding: "2rem" } : undefined}>
+                    {item.description}
+                  </p>
+                </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex justify-between" style={{ gap: "0.5rem", margin: "1.3rem" }}>
                 <Link
                   href="/servicios"
                   className="bg-[#007AFF] text-white rounded-full font-medium"
@@ -215,6 +223,16 @@ export default function Home() {
           ))}
         </motion.div>
       </section>
+
+      {/* Footer */}
+      <footer
+        className="text-center text-[#86868b] text-[0.75rem] tracking-[-0.2px]"
+        style={{ padding: "5rem 1.5rem 2rem" }}
+      >
+        <div className="h-[1px] bg-[#d2d2d7] mb-4 mx-6" />
+        <p>monaco &mdash; detallado de motos</p>
+        <p className="mt-1">© {new Date().getFullYear()} Todos los derechos reservados.</p>
+      </footer>
     </div>
   );
 }
