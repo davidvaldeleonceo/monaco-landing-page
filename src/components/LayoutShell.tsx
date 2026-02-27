@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Navbar } from "@/components/Navbar";
+import { StickyNavbar } from "@/components/StickyNavbar";
 import { Footer } from "@/components/Footer";
 
 export function LayoutShell({ children }: { children: React.ReactNode }) {
@@ -15,8 +15,8 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Navbar />
-      <main>{children}</main>
+      <StickyNavbar />
+      <main className="pt-[70px]">{children}</main>
       <Footer />
     </>
   );
