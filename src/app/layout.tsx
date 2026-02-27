@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Monaco Moto Detailing | Lavado Premium de Motos",
+  title: "Monaco Moto Detailing",
   description:
-    "Servicio profesional de lavado y detailing de motos. Curso especializado para montar tu propio lavadero de motos. Calidad premium, resultados impecables.",
+    "Reserva un lavado profesional y detallado para tu moto.",
   keywords: [
     "lavado de motos",
     "detailing motos",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "monaco moto detailing",
   ],
   openGraph: {
-    title: "Monaco Moto Detailing | Lavado Premium de Motos",
+    title: "Monaco Moto Detailing",
     description:
-      "Servicio profesional de lavado y detailing de motos. Curso especializado para montar tu propio lavadero.",
+      "Reserva un lavado profesional y detallado para tu moto.",
     url: "https://monacomotodetailing.com",
     siteName: "Monaco Moto Detailing",
     locale: "es_ES",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Monaco Moto Detailing",
-    description: "Lavado premium de motos y curso para emprendedores.",
+    description: "Reserva un lavado profesional y detallado para tu moto.",
   },
   robots: {
     index: true,
