@@ -556,6 +556,25 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* Montar lavadero CTA */}
+      <section className="px-6 pb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4, ease }}
+          className="flex justify-center"
+          style={{ margin: "3rem 1rem 0 1rem" }}
+        >
+          <Link
+            href="/curso"
+            className="text-[#007AFF] font-medium tracking-[-0.2px] underline underline-offset-4"
+            style={{ fontSize: "0.95rem" }}
+          >
+            quiero montar mi lavadero de motos
+          </Link>
+        </motion.div>
+      </section>
+
       {/* Contactenos Section */}
       <section className="px-6 pb-16">
         <motion.div
