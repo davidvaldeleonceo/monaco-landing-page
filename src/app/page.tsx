@@ -141,13 +141,13 @@ export default function Home() {
           >
             más informacion
           </Link>
-          <Link
-            href="https://cal.com/monaco-dropi-eyx9iv/reserva-sin-membresia?overlayCalendar=true"
+          <a
+            href="#reservas"
             className="border border-[#007AFF] text-[#007AFF] rounded-full font-medium"
             style={{ padding: "0.5rem 0.8rem", fontSize: "0.8rem", letterSpacing: "0px" }}
           >
             reservar lavado
-          </Link>
+          </a>
         </motion.div>
 
         {/* Motorcycle Image */}
@@ -237,13 +237,13 @@ export default function Home() {
                 >
                   más informacion
                 </Link>
-                <Link
-                  href="https://cal.com/monaco-dropi-eyx9iv/reserva-sin-membresia?overlayCalendar=true"
+                <a
+                  href="#reservas"
                   className={`rounded-full font-medium ${item.image ? "border border-white text-white" : "border border-[#007AFF] text-[#007AFF]"}`}
                   style={{ padding: "0.5rem 0.8rem", fontSize: "0.85rem", letterSpacing: "0px" }}
                 >
                   reservar
-                </Link>
+                </a>
               </div>
             </div>
           ))}
@@ -315,13 +315,13 @@ export default function Home() {
           >
             más informacion
           </Link>
-          <Link
-            href="https://cal.com/monaco-dropi-eyx9iv/reserva-sin-membresia?overlayCalendar=true"
+          <a
+            href="#reservas"
             className="border border-white text-white rounded-full font-medium"
             style={{ padding: "0.5rem 0.8rem", fontSize: "0.85rem", letterSpacing: "0px" }}
           >
             reservar
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -366,13 +366,13 @@ export default function Home() {
           >
             más informacion
           </Link>
-          <Link
-            href="https://cal.com/monaco-dropi-eyx9iv/reserva-sin-membresia?overlayCalendar=true"
+          <a
+            href="#reservas"
             className="border border-white text-white rounded-full font-medium"
             style={{ padding: "0.5rem 0.8rem", fontSize: "0.85rem", letterSpacing: "0px" }}
           >
             reservar
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -484,19 +484,23 @@ export default function Home() {
         >
           <h2
             className="text-[1.6rem] md:text-[2rem] font-bold text-[#1d1d1f] tracking-[-1px] text-center"
-            style={{ fontSize: "1.3rem", margin: "3rem 1rem 3rem 1rem" }}
+            style={{ fontSize: "1.3rem", margin: "3rem 1rem 0rem 1rem" }}
           >
             aquí puedes lavar tu moto
           </h2>
+          <p className="text-[#86868b] tracking-[-0.2px] text-center" style={{ fontSize: "0.8rem", margin: "0 1rem 4rem 1rem" }}>
+            escoge la ubicación que te quede más cerca
+          </p>
         </motion.div>
 
         <motion.div
+          id="reservas"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.5, ease }}
           ref={scrollLocationRef}
           className="flex gap-4 overflow-x-auto no-scrollbar -mx-6 px-6 pb-2"
-          style={{ marginTop: "2rem", marginBottom: "2rem" }}
+          style={{ marginTop: "2rem", marginBottom: "2rem", scrollMarginTop: "15vh" }}
         >
           {/* Soacha card */}
           <div
