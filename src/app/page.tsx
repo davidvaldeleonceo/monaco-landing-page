@@ -3,10 +3,19 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { StickyNavbar } from "@/components/StickyNavbar";
 
 const ease: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+
+const heroSlides = [
+  { src: "/imagen-17.png", alt: "Moto detailing", label: "lavado detallado" },
+  { src: "/imagen-12.png", alt: "Moto detailing", label: "proteccion total" },
+  { src: "/imagen-13.png", alt: "Moto detailing", label: "lavado profesional" },
+  { src: "/imagen-14.png", alt: "Moto detailing", label: "lavado detallado" },
+  { src: "/imagen-15.png", alt: "Moto detailing", label: "proteccion total" },
+  { src: "/imagen-16.png", alt: "Moto detailing", label: "lavado profesional" },
+];
 
 const adicionales = [
   {
@@ -32,6 +41,69 @@ export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollReviewsRef = useRef<HTMLDivElement>(null);
   const scrollLocationRef = useRef<HTMLDivElement>(null);
+  const heroScrollRef = useRef<HTMLDivElement>(null);
+  const [heroIndex, setHeroIndex] = useState(0);
+  const isResetting = useRef(false);
+
+  const handleHeroScroll = useCallback(() => {
+    const el = heroScrollRef.current;
+    if (!el || isResetting.current) return;
+    const slideWidth = el.offsetWidth;
+    const rawIndex = Math.round(el.scrollLeft / slideWidth);
+    // Offset by 1 because of the cloned first slide at the beginning
+    const realIndex = rawIndex - 1;
+    if (realIndex >= 0 && realIndex < heroSlides.length) {
+      setHeroIndex(realIndex);
+    }
+  }, []);
+
+  // Jump without animation when reaching cloned slides
+  useEffect(() => {
+    const el = heroScrollRef.current;
+    if (!el) return;
+    const onScrollEnd = () => {
+      if (isResetting.current) return;
+      const slideWidth = el.offsetWidth;
+      const rawIndex = Math.round(el.scrollLeft / slideWidth);
+      const totalWithClones = heroSlides.length + 2;
+      if (rawIndex <= 0) {
+        isResetting.current = true;
+        el.scrollTo({ left: heroSlides.length * slideWidth, behavior: "instant" });
+        setHeroIndex(heroSlides.length - 1);
+        requestAnimationFrame(() => { isResetting.current = false; });
+      } else if (rawIndex >= totalWithClones - 1) {
+        isResetting.current = true;
+        el.scrollTo({ left: slideWidth, behavior: "instant" });
+        setHeroIndex(0);
+        requestAnimationFrame(() => { isResetting.current = false; });
+      }
+    };
+    el.addEventListener("scrollend", onScrollEnd);
+    return () => el.removeEventListener("scrollend", onScrollEnd);
+  }, []);
+
+  // Set initial scroll position to first real slide
+  useEffect(() => {
+    const el = heroScrollRef.current;
+    if (el) {
+      el.scrollTo({ left: el.offsetWidth, behavior: "instant" });
+    }
+  }, []);
+
+  // Autoplay
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const el = heroScrollRef.current;
+      if (!el || isResetting.current) return;
+      const slideWidth = el.offsetWidth;
+      const rawIndex = Math.round(el.scrollLeft / slideWidth);
+      el.scrollTo({
+        left: (rawIndex + 1) * slideWidth,
+        behavior: "smooth",
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroIndex]);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -93,30 +165,67 @@ export default function Home() {
           </a>
         </motion.div>
 
-        {/* Motorcycle Image */}
+        {/* Motorcycle Carousel */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease }}
-          className="mt-6 w-full flex justify-center"
+          className="mt-6 w-full"
         >
-          <Image
-            src="/bmw-gs.png"
-            alt="BMW GS - Lavado detallado"
-            width={800}
-            height={500}
-            className="w-auto h-[10rem] object-contain"
-            priority
-          />
+          <div
+            ref={heroScrollRef}
+            onScroll={handleHeroScroll}
+            className="flex overflow-x-auto no-scrollbar"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {/* Clone last slide at start */}
+            <div className="flex-shrink-0 w-full flex justify-center" style={{ scrollSnapAlign: "center" }}>
+              <Image
+                src={heroSlides[heroSlides.length - 1].src}
+                alt={heroSlides[heroSlides.length - 1].alt}
+                width={800}
+                height={500}
+                className="w-auto h-[10rem] object-contain scale-[1.6]"
+              />
+            </div>
+            {heroSlides.map((img, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-full flex justify-center"
+                style={{ scrollSnapAlign: "center" }}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={800}
+                  height={500}
+                  className="w-auto h-[10rem] object-contain scale-[1.6]"
+                  priority={i === 0}
+                />
+              </div>
+            ))}
+            {/* Clone first slide at end */}
+            <div className="flex-shrink-0 w-full flex justify-center" style={{ scrollSnapAlign: "center" }}>
+              <Image
+                src={heroSlides[0].src}
+                alt={heroSlides[0].alt}
+                width={800}
+                height={500}
+                className="w-auto h-[10rem] object-contain scale-[1.6]"
+              />
+            </div>
+          </div>
         </motion.div>
 
         <motion.p
+          key={heroIndex}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5, ease }}
-          className="mt-1 text-[1.05rem] text-[#1d1d1f] text-center tracking-[-0.3px]"
+          transition={{ duration: 0.4 }}
+          className="text-[1.05rem] text-[#1d1d1f] text-center tracking-[-0.3px]"
+          style={{ marginTop: "1rem" }}
         >
-          lavado detallado
+          {heroSlides[heroIndex].label}
         </motion.p>
       </section>
 
