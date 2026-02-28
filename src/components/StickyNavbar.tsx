@@ -58,26 +58,35 @@ export function StickyNavbar() {
         />
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Fullscreen Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease }}
-            className="absolute top-full right-6 bg-white rounded-2xl shadow-lg border border-[#e5e5e5] py-2 z-40 min-w-[220px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease }}
+            className="fixed inset-0 bg-white z-40 flex flex-col justify-center"
+            style={{ paddingLeft: "2rem" }}
           >
-            {menuItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block px-5 py-3 text-[0.9rem] text-[#1d1d1f] hover:bg-[#f5f5f7] tracking-[-0.2px]"
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <nav className="flex flex-col gap-8">
+              {menuItems.map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 + i * 0.08, ease }}
+                >
+                  <Link
+                    href={item.href}
+                    className="text-[1.8rem] font-bold text-[#1d1d1f] tracking-[-1px]"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { StickyNavbar } from "@/components/StickyNavbar";
 
 const ease: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
@@ -55,6 +55,8 @@ export default function ServiciosPage() {
   const [showCalc, setShowCalc] = useState(false);
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const scrollAdicionalesRef = useRef<HTMLDivElement>(null);
+  const [serviceImgIndex, setServiceImgIndex] = useState(0);
+  const serviceImages = ["/imagen-30.png", "/imagen-31.png", "/imagen-32.png", "/imagen-33.png"];
 
   const calcExtras = [
     { name: "Kit de arrastre", price: 10000 },
@@ -85,7 +87,7 @@ export default function ServiciosPage() {
         >
           <h2
             className="text-[1.6rem] md:text-[2rem] font-bold text-[#1d1d1f] tracking-[-1px]"
-            style={{ fontSize: "1.3rem", margin: "4rem 1rem 0 1rem" }}
+            style={{ fontSize: "1.3rem", margin: "5rem 1rem 0" }}
           >
             lavado detallado
           </h2>
@@ -111,14 +113,45 @@ export default function ServiciosPage() {
           </p>
         </motion.div>
 
-        {/* Image placeholder */}
+        {/* Images */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4, ease }}
-          className="rounded-2xl bg-[#d1d1d6]"
-          style={{ margin: "2rem 1rem 4rem 1rem", minHeight: "220px" }}
-        />
+          className="mx-auto"
+          style={{ margin: "2rem auto 4rem auto", width: "300px" }}
+        >
+          <div className="relative w-full rounded-2xl overflow-hidden" style={{ height: "190px" }}>
+            {serviceImages.map((src, i) => (
+              <motion.div
+                key={i}
+                animate={{ opacity: serviceImgIndex === i ? 1 : 0 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0"
+                style={{ pointerEvents: serviceImgIndex === i ? "auto" : "none" }}
+              >
+                <Image src={src} alt="Lavado detallado" fill className="object-cover object-center" />
+              </motion.div>
+            ))}
+          </div>
+          {/* Navigation arrows */}
+          <div className="flex justify-center gap-3" style={{ marginTop: "1rem" }}>
+            <button
+              aria-label="Anterior"
+              onClick={() => setServiceImgIndex((prev) => (prev - 1 + serviceImages.length) % serviceImages.length)}
+              className="w-10 h-10 rounded-full border border-[#d2d2d7] flex items-center justify-center text-[#86868b] active:border-[#007AFF] active:text-[#007AFF] transition-colors text-3xl"
+            >
+              ‹
+            </button>
+            <button
+              aria-label="Siguiente"
+              onClick={() => setServiceImgIndex((prev) => (prev + 1) % serviceImages.length)}
+              className="w-10 h-10 rounded-full border border-[#d2d2d7] flex items-center justify-center text-[#86868b] active:border-[#007AFF] active:text-[#007AFF] transition-colors text-3xl"
+            >
+              ›
+            </button>
+          </div>
+        </motion.div>
 
         {/* Included items */}
         <motion.div
@@ -195,7 +228,7 @@ export default function ServiciosPage() {
               className="flex-shrink-0 relative overflow-hidden rounded-2xl p-5 flex flex-col justify-between"
               style={{ width: "260px", minHeight: "420px", margin: item.cardMargin }}
             >
-              <Image src={item.image} alt={item.title} fill className="object-cover" style={{ zIndex: 0 }} />
+              <Image src={item.image} alt={item.title} fill className="object-cover object-center" style={{ zIndex: 0 }} />
               <div className="absolute inset-0 bg-black/40" style={{ zIndex: 1 }} />
               <div className="relative" style={{ zIndex: 2 }}>
                 <p className="text-white/70 text-[1.05rem] tracking-[-0.2px]" style={{ padding: "1rem" }}>
